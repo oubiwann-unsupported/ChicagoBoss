@@ -218,7 +218,8 @@ module_list1([Dir|Rest], Application, ModuleAcc) ->
                         case filename:extension(X) of
                             ".erl" -> filename:basename(X, ".erl");
                             ".ex" -> "Elixir-"++inflector:camelize(atom_to_list(Application))++
-                                "-"++inflector:camelize(filename:basename(X, ".ex"))
+                                "-"++inflector:camelize(filename:basename(X, ".ex"));
+                            ".lfe" -> filename:basename(X, ".lfe")
                         end
                 end, lists:filter(fun
                         ("."++_) ->

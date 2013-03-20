@@ -164,6 +164,9 @@ maybe_compile(File, Application, OutDir, Compiler) ->
             list_to_atom(lists:concat(["Elixir", "-", 
                         inflector:camelize(atom_to_list(Application)), "-",
                         inflector:camelize(ModuleName)]));
+        ".lfe" ->
+            ModuleName = filename:basename(File, ".lfe"),
+            list_to_atom(ModuleName);
         _ ->
             undefined
     end,
@@ -253,7 +256,10 @@ compile_controller(ModulePath, OutDir) ->
             boss_controller_compiler:compile(ModulePath, [{out_dir, OutDir}, {include_dirs, IncludeDirs},
                     {compiler_options, boss_env:get_env(boss, compiler_options, [return_errors])}]);
         ".ex" ->
-            boss_elixir_compiler:compile(ModulePath, [{out_dir, OutDir}])
+            boss_elixir_compiler:compile(ModulePath, [{out_dir, OutDir}]);
+        ".lfe" ->
+            boss_controller_compiler:compile(ModulePath, [{out_dir, OutDir}, {include_dirs, IncludeDirs},
+                    {compiler_options, boss_env:get_env(boss, compiler_options, [return_errors])}])
     end.
 
 compile(ModulePath, OutDir) ->
@@ -263,7 +269,10 @@ compile(ModulePath, OutDir) ->
             boss_compiler:compile(ModulePath, [{out_dir, OutDir}, {include_dirs, IncludeDirs},
                     {compiler_options, boss_env:get_env(boss, compiler_options, [return_errors])}]);
         ".ex" ->
-            boss_elixir_compiler:compile(ModulePath, [{out_dir, OutDir}])
+            boss_elixir_compiler:compile(ModulePath, [{out_dir, OutDir}]);
+        ".lfe" ->
+            boss_compiler:compile(ModulePath, [{out_dir, OutDir}, {include_dirs, IncludeDirs},
+                    {compiler_options, boss_env:get_env(boss, compiler_options, [return_errors])}])
     end.
 
 load_view_lib(Application, OutDir, TranslatorPid) ->
