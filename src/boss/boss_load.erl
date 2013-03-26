@@ -258,8 +258,7 @@ compile_controller(ModulePath, OutDir) ->
         ".ex" ->
             boss_elixir_compiler:compile(ModulePath, [{out_dir, OutDir}]);
         ".lfe" ->
-            boss_controller_compiler:compile(ModulePath, [{out_dir, OutDir}, {include_dirs, IncludeDirs},
-                    {compiler_options, boss_env:get_env(boss, compiler_options, [return_errors])}])
+            lfe_comp:file(ModulePath, [{out_dir, OutDir}, {include_dirs, IncludeDirs}])
     end.
 
 compile(ModulePath, OutDir) ->
@@ -271,8 +270,7 @@ compile(ModulePath, OutDir) ->
         ".ex" ->
             boss_elixir_compiler:compile(ModulePath, [{out_dir, OutDir}]);
         ".lfe" ->
-            boss_compiler:compile(ModulePath, [{out_dir, OutDir}, {include_dirs, IncludeDirs},
-                    {compiler_options, boss_env:get_env(boss, compiler_options, [return_errors])}])
+            lfe_comp:file(ModulePath, [{out_dir, OutDir}, {include_dirs, IncludeDirs}])
     end.
 
 load_view_lib(Application, OutDir, TranslatorPid) ->

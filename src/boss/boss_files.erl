@@ -215,6 +215,7 @@ module_list1([Dir|Rest], Application, ModuleAcc) ->
     case file:list_dir(Dir) of
         {ok, Files} ->
             Modules = lists:map(fun(X) -> 
+                        io:format("~p~n", [X]),
                         case filename:extension(X) of
                             ".erl" -> filename:basename(X, ".erl");
                             ".ex" -> "Elixir-"++inflector:camelize(atom_to_list(Application))++
@@ -224,8 +225,9 @@ module_list1([Dir|Rest], Application, ModuleAcc) ->
                 end, lists:filter(fun
                         ("."++_) ->
                             false;
-                        (File) -> (lists:suffix(".erl", File) orelse 
-                                lists:suffix(".ex", File))
+                        (File) -> (lists:suffix(".erl", File) orelse
+                                lists:suffix(".ex", File) orelse
+                                lists:suffix(".lfe", File))
                     end, Files)),
             module_list1(Rest, Application, Modules ++ ModuleAcc);
         _ ->
